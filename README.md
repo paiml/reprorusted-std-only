@@ -1,8 +1,8 @@
 # reprorusted-std-only
 
-[![CI](https://github.com/noahgift/reprorusted-std-only/actions/workflows/ci.yml/badge.svg)](https://github.com/noahgift/reprorusted-std-only/actions/workflows/ci.yml)
+[![CI](https://github.com/paiml/reprorusted-std-only/actions/workflows/ci.yml/badge.svg)](https://github.com/paiml/reprorusted-std-only/actions/workflows/ci.yml)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
-[![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)](https://github.com/noahgift/reprorusted-std-only)
+[![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)](https://github.com/paiml/reprorusted-std-only)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 [![Ruff](https://img.shields.io/badge/linter-ruff-purple.svg)](https://github.com/astral-sh/ruff)
 [![uv](https://img.shields.io/badge/package-uv-orange.svg)](https://github.com/astral-sh/uv)
@@ -20,7 +20,7 @@ the CPython 3.11+ standard library. This is enforced by AST scanning in CI
 
 ```bash
 # Clone and setup
-git clone https://github.com/noahgift/reprorusted-std-only.git
+git clone https://github.com/paiml/reprorusted-std-only.git
 cd reprorusted-std-only
 make setup
 
