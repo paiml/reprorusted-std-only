@@ -20,6 +20,28 @@ STDLIB_MODULES: frozenset[str] = frozenset(sys.stdlib_module_names)
 ALLOWED_FIRST_PARTY: frozenset[str] = frozenset({"reprorusted_std_only"})
 
 
+def _is_allowed_module(module_name: str) -> bool:
+    """Check if a module name is in the stdlib or first-party allowlist."""
+    top = module_name.split(".")[0]
+    return top in STDLIB_MODULES or top in ALLOWED_FIRST_PARTY
+
+
+def _check_import_node(node: ast.Import, path: Path) -> list[str]:
+    """Check an Import node for violations."""
+    violations: list[str] = []
+    for alias in node.names:
+        if not _is_allowed_module(alias.name):
+            violations.append(f"{path}:{node.lineno} imports '{alias.name}'")
+    return violations
+
+
+def _check_import_from_node(node: ast.ImportFrom, path: Path) -> list[str]:
+    """Check an ImportFrom node for violations."""
+    if node.module and not _is_allowed_module(node.module):
+        return [f"{path}:{node.lineno} imports '{node.module}'"]
+    return []
+
+
 def check_file(path: Path) -> list[str]:
     """Return list of non-stdlib top-level imports.
 
@@ -33,14 +55,9 @@ def check_file(path: Path) -> list[str]:
     violations: list[str] = []
     for node in ast.walk(tree):
         if isinstance(node, ast.Import):
-            for alias in node.names:
-                top = alias.name.split(".")[0]
-                if top not in STDLIB_MODULES and top not in ALLOWED_FIRST_PARTY:
-                    violations.append(f"{path}:{node.lineno} imports '{alias.name}'")
-        elif isinstance(node, ast.ImportFrom) and node.module:
-            top = node.module.split(".")[0]
-            if top not in STDLIB_MODULES and top not in ALLOWED_FIRST_PARTY:
-                violations.append(f"{path}:{node.lineno} imports '{node.module}'")
+            violations.extend(_check_import_node(node, path))
+        elif isinstance(node, ast.ImportFrom):
+            violations.extend(_check_import_from_node(node, path))
     return violations
 
 

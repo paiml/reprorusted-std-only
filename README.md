@@ -16,6 +16,36 @@
 the CPython 3.11+ standard library. This is enforced by AST scanning in CI
 (Gate 0).
 
+## Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/paiml/reprorusted-std-only.git
+cd reprorusted-std-only
+
+# Install uv if not already installed
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Install dependencies
+make setup
+```
+
+## Usage
+
+```bash
+# Run all quality gates (6-gate Jidoka pipeline)
+make check
+
+# Run tests with coverage
+make test
+
+# Export corpus to Parquet format
+make export
+
+# Validate stdlib-only constraint
+uv run python scripts/validate_stdlib_only.py
+```
+
 ## Demo
 
 ```bash
